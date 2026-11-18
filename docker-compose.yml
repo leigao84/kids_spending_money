@@ -1,0 +1,12 @@
+services:
+  allowance-ledger:
+    build: .
+    image: kids-spending-money:local
+    container_name: allowance-ledger
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./data:/data
+    environment:
+      APP_TZ: America/Los_Angeles
