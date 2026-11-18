@@ -256,9 +256,18 @@ BASE = """<!doctype html>
   body { margin:0; font-family:-apple-system, "Segoe UI", Roboto, sans-serif;
          background:var(--bg); color:var(--ink); }
   header { max-width:860px; margin:0 auto; padding:20px 16px 4px;
-           display:flex; justify-content:space-between; align-items:baseline; }
-  header h1 { font-size:22px; margin:0; }
-  header nav a { color:var(--accent); text-decoration:none; font-weight:600; margin-left:14px; }
+           display:flex; justify-content:space-between; align-items:center;
+           flex-wrap:wrap; gap:6px 12px; }
+  header h1 { font-size:22px; margin:0; white-space:nowrap; }
+  header nav { display:flex; flex-wrap:wrap; justify-content:flex-end; }
+  header nav a { color:var(--accent); text-decoration:none; font-weight:600; padding:6px 8px; }
+  @media (max-width:560px) {
+    header { flex-direction:column; align-items:flex-start; }
+    header nav { justify-content:flex-start; }
+    header nav a { background:var(--card); border:1px solid var(--line);
+                   border-radius:99px; padding:6px 12px; margin:2px 6px 2px 0; font-size:14.5px; }
+    .card .bal { font-size:32px; }
+  }
   main { max-width:860px; margin:0 auto; padding:12px 16px 40px; }
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
@@ -281,8 +290,9 @@ BASE = """<!doctype html>
            border-radius:16px; padding:16px; display:grid; gap:10px; }
   label { font-size:13px; font-weight:600; color:var(--muted); display:grid; gap:4px; }
   input, select { font-size:16px; padding:9px 10px; border:1px solid var(--line);
-           border-radius:10px; background:#fff; color:var(--ink); width:100%; }
+           border-radius:10px; background:#fff; color:var(--ink); width:100%; min-width:0; }
   .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .row > * { min-width:0; }
   .seg { display:flex; gap:8px; }
   .seg label { flex:1; }
   .seg input { display:none; }
