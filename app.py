@@ -238,6 +238,17 @@ def post_due_allowances():
 
 
 @app.before_request
+def _force_https():
+    # Public traffic arrives through the Cloudflare Tunnel, which passes
+    # the visitor's original scheme in X-Forwarded-Proto. Bounce plain
+    # http to https. LAN requests (direct, or via Caddy which already
+    # redirects its own http traffic) carry https or no header, so they
+    # are unaffected.
+    if request.headers.get("X-Forwarded-Proto") == "http":
+        return redirect(request.url.replace("http://", "https://", 1), code=308)
+
+
+@app.before_request
 def _before():
     if request.endpoint != "static":
         post_due_allowances()
