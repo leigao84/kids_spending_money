@@ -46,6 +46,22 @@ docker exec -it allowance-ledger python app.py set-password
 After that, the password can also be changed inside the app (Password link,
 once logged in).
 
+## Backups
+
+The whole ledger is one SQLite file (`data/ledger.db`), so a backup is just a
+consistent copy of it. Take one with SQLite's backup API (safe while the app
+is running):
+
+```sh
+docker run --rm -v "$PWD":/al python:3.12-slim python3 -c \
+  "import sqlite3; s=sqlite3.connect('/al/data/ledger.db'); d=sqlite3.connect('/al/backups/ledger-backup.db'); s.backup(d)"
+```
+
+In production this runs nightly: a scheduled job snapshots the DB, uploads
+the snapshot to a Google Drive folder (`AllowanceLedger`), and prunes copies
+older than 30 days (always keeping the newest 7). Restore = stop the
+container, drop a snapshot in as `data/ledger.db`, start it again.
+
 ## Configuration
 
 | Env var   | Default                    | Purpose                        |
